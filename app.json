@@ -1,0 +1,12 @@
+{
+  "name": "lifeslibrary",
+  "displayName": "lifeslibrary",
+  "expo": {
+    "name": "lifeslibrary",
+    "slug": "lifeslibrary",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
