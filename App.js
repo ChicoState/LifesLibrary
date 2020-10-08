@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Link, BrowserRouter as Router, Route } from 'react-router-dom';
 // import './App.css';
 import firebase from './Firebase';
+import Edit from './components/Edit';
+import Create from './components/Create';
+import Show from './components/Show';
 
 class App extends Component {
   constructor(props) {
@@ -22,6 +25,7 @@ class App extends Component {
         doc, // DocumentSnapshot
         title,
         published,
+        author,
       });
     });
     this.setState({
@@ -43,9 +47,10 @@ class App extends Component {
             </h3>
           </div>
           <div class="panel-body">
-                <Router>
-            <h4><Link to="/create">Add Book</Link></h4>
-                  </Router>
+              <Router>
+            <h4><Route exact path="/create" component={Create} /></h4>
+            <td><Link to='/create'>Add Book</Link>  </td>
+                </Router>
             <table class="table table-stripe">
               <thead>
                 <tr>
