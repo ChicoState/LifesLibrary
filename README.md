@@ -9,4 +9,4 @@
 
 2. Clone repo and $yarn install
 
-3.  expo start 
+3. $expo start 
