@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, FlatList, Dimensions } from 'react-native';
+import AddBook from './addbook';
 const numColumns = 3;
 const data = [
     { key: 'A' }, { key: 'B' }, { key: 'C' }, { key: 'D' }, { key: 'E' }, { key: 'F' }, { key: 'G' }, { key: 'H' }, { key: 'I' }, { key: 'J' },
@@ -23,20 +24,26 @@ const formatData = (data, numColumns) => {
 export default class App extends Component {
   render() {
     return (
-        <FlatList
-            data={formatData(data, numColumns)}
-            style={styles.container}
-            numColumns={numColumns}
-            renderItem = {({ item, index }) => {
-                if (item.empty === true) {
-                return <View style={[styles.item, styles.itemInvisible]} />;
-                }
-                return (
-                <View style={styles.item}>
-                    <Text style={styles.itemText}>Book {item.key}</Text>
-                </View>
-                )}}
-        />
+        <View style={styles.container}>
+            <FlatList
+                data={formatData(data, numColumns)}
+                style={styles.container}
+                numColumns={numColumns}
+                renderItem = {({ item, index }) => {
+                    if (item.empty === true) {
+                    return <View style={[styles.item, styles.itemInvisible]} />;
+                    }
+                    return (
+                    <View style={styles.item}>
+                        <Text style={styles.itemText}>Book {item.key}</Text>
+                    </View>
+                    )}}
+            />
+            <View style={{ position:'absolute', bottom: 5, right: 5}}>
+                <AddBook/>
+            </View>
+            
+        </View>
         );
     }
 }
