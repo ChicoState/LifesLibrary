@@ -9,24 +9,12 @@ const data = [
 
 ];
 
-const formatData = (data, numColumns) => {
-    const numberOfFullRows = Math.floor(data.length / numColumns);
-  
-    let numberOfElementsLastRow = data.length - (numberOfFullRows * numColumns);
-    while (numberOfElementsLastRow !== numColumns && numberOfElementsLastRow !== 0) {
-      data.push({ key: `blank-${numberOfElementsLastRow}`, empty: true });
-      numberOfElementsLastRow++;
-    }
-  
-    return data;
-  };
-
 export default class App extends Component {
   render() {
     return (
         <View style={styles.container}>
             <FlatList
-                data={formatData(data, numColumns)}
+                data={data}
                 style={styles.container}
                 numColumns={numColumns}
                 renderItem = {({ item, index }) => {
@@ -50,15 +38,15 @@ export default class App extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         marginVertical: 0,
     },
     item: {
         backgroundColor: '#333',
         alignItems: 'center',
         justifyContent: 'center',
-        flex: 1,
+        flex: 0,
         margin: 1.5,
+        width: Dimensions.get('window').width / 3 - (1.5 * (numColumns - 1)),
         height: Dimensions.get('window').width / 3 * 1.5,
     },
     itemInvisible: {
