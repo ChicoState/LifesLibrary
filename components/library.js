@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, FlatList, Dimensions } from 'react-native';
 import AddBook from './addbook';
-const numColumns = 3;
+const numColumns = 4;
 const data = [
     { key: 'A' }, { key: 'B' }, { key: 'C' }, { key: 'D' }, { key: 'E' }, { key: 'F' }, { key: 'G' }, { key: 'H' }, { key: 'I' }, { key: 'J' },
     { key: 'K' }, { key: 'L' }, { key: 'M' }, { key: 'N' }, { key: 'O' }, { key: 'P' }, { key: 'Q' }, { key: 'R' }, { key: 'S' }, { key: 'T' },
@@ -17,6 +17,8 @@ export default class App extends Component {
                 data={data}
                 style={styles.container}
                 numColumns={numColumns}
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
                 renderItem = {({ item, index }) => {
                     if (item.empty === true) {
                     return <View style={[styles.item, styles.itemInvisible]} />;
@@ -46,8 +48,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flex: 0,
         margin: 1.5,
-        width: Dimensions.get('window').width / 3 - (1.5 * (numColumns - 1)),
-        height: Dimensions.get('window').width / 3 * 1.5,
+        width: Dimensions.get('window').width / numColumns - (3),
+        height: Dimensions.get('window').width / numColumns * 1.5,
     },
     itemInvisible: {
         backgroundColor: 'transparent',
