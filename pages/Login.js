@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, TextInput, View, Button } from "react-native";
 import * as firebase from "firebase";
-import { AsyncStorage } from "react-native";
 
 export default class Login extends React.Component {
   state = { email: "", password: "", errorMessage: null };
