@@ -57,7 +57,6 @@ export default class App extends Component {
             <View style={{ position:'absolute', bottom: 5, right: 5}}>
                 <AddBook/>
             </View>
-            <Create/>
         </View>
         );
     }
