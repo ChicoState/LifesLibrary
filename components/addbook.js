@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Alert, Modal, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import firebase from './Firebase'
 
 export default function App() {
+
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <View style={styles.centeredView}>
@@ -12,7 +14,7 @@ export default function App() {
         onRequestClose={() => {
           Alert.alert('Modal has been closed.');
         }}>
-        
+
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>Add Book Form</Text>

@@ -5,22 +5,22 @@ import Scanner from '../components/scanner';
 import Library from '../components/library';
 import { Component } from 'react';
 
-export default class App extends React.Component 
+export default class App extends React.Component
 {
     render()
     {
         return(
-    
+
             <Swiper loop={false} showsPagination={false} index={1}>
                 <View style={styles.search}>
                     <Text>Search</Text>
-                    <TextInput placeholder="Search Book Titles" 
+                    <TextInput placeholder="Search Book Titles"
                     style={{backgroundColor: '#eee', width: Dimensions.get('window').width, textAlign: "center", fontSize: 30,}}/>
                 </View >
-                <Library/>             
+                <Library/>
                 <Scanner/>
             </Swiper>
-              
+
         );
     }
 

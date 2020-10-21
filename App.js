@@ -11,19 +11,19 @@ import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 
 // Firebase Code
-import * as firebase from 'firebase';
-import fireconfig from "./firebase";
+// import * as firebase from 'firebase';
+import firebase from "./components/Firebase";
 // Initialize Firebase
-if (!firebase.apps.length) {
-  firebase.initializeApp(fireconfig);
-}
+// if (!firebase.apps.length) {
+//   firebase.initializeApp(fireconfig);
+// }
 // firebase.analytics();
 
 const Stack = createStackNavigator();
 
 function App() {
   return (
-    
+
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Load">
         <Stack.Screen name="Load" component={Load} />

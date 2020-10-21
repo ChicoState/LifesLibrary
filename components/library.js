@@ -1,20 +1,45 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, FlatList, Dimensions } from 'react-native';
 import AddBook from './addbook';
-const numColumns = 4;
-const data = [
-    { key: 'A' }, { key: 'B' }, { key: 'C' }, { key: 'D' }, { key: 'E' }, { key: 'F' }, { key: 'G' }, { key: 'H' }, { key: 'I' }, { key: 'J' },
-    { key: 'K' }, { key: 'L' }, { key: 'M' }, { key: 'N' }, { key: 'O' }, { key: 'P' }, { key: 'Q' }, { key: 'R' }, { key: 'S' }, { key: 'T' },
-    { key: 'U' }, { key: 'V' }, { key: 'W' }, { key: 'X' }, { key: 'Y' }, { key: 'Z' },
-
-];
+import Create from './Create'
+import firebase from './Firebase';
+const numColumns = 3;
 
 export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.ref = firebase.firestore().collection('book');
+    this.unsubscribe = null;
+    this.state = {
+      books: []
+    };
+  }
+
+  onCollectionUpdate = (querySnapshot) => {
+    const books = [];
+    querySnapshot.forEach((doc) => {
+      const { title, author, published } = doc.data();
+      books.push({
+        key: doc.id,
+        doc, // DocumentSnapshot
+        title,
+        published,
+        author,
+      });
+    });
+    this.setState({
+      books
+   });
+  }
+
+  componentDidMount() {
+    this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+  }
   render() {
     return (
         <View style={styles.container}>
             <FlatList
-                data={data}
+                data={this.state.books}
                 style={styles.container}
                 numColumns={numColumns}
                 showsVerticalScrollIndicator={false}
@@ -25,14 +50,14 @@ export default class App extends Component {
                     }
                     return (
                     <View style={styles.item}>
-                        <Text style={styles.itemText}>Book {item.key}</Text>
+                        <Text style={styles.itemText}>{item.title}</Text>
                     </View>
                     )}}
             />
             <View style={{ position:'absolute', bottom: 5, right: 5}}>
                 <AddBook/>
             </View>
-            
+            <Create/>
         </View>
         );
     }
