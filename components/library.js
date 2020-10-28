@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, FlatList, Dimensions } from 'react-native';
 import AddBook from './addbook';
 import Create from './Create'
 import firebase from './Firebase';
+import Search from './search'
 const numColumns = 3;
 
 export default class App extends Component {
@@ -56,6 +57,7 @@ export default class App extends Component {
             />
             <View style={{ position:'absolute', bottom: 5, right: 5}}>
                 <AddBook/>
+                <Search/>
             </View>
         </View>
         );
