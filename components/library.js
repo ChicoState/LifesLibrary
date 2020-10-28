@@ -39,6 +39,7 @@ export default class App extends Component {
   render() {
     return (
         <View style={styles.container}>
+            <Search/>
             <FlatList
                 data={this.state.books}
                 style={styles.container}
@@ -57,7 +58,7 @@ export default class App extends Component {
             />
             <View style={{ position:'absolute', bottom: 5, right: 5}}>
                 <AddBook/>
-                <Search/>
+
             </View>
         </View>
         );
