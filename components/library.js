@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, FlatList, Dimensions } from 'react-native';
 import AddBook from './addbook';
 import Create from './Create'
 import firebase from './Firebase';
-import Search from './search'
+import Searchbar from './searchbar'
 const numColumns = 3;
 
 export default class App extends Component {
@@ -39,7 +39,7 @@ export default class App extends Component {
   render() {
     return (
         <View style={styles.container}>
-            <Search/>
+            <Searchbar/>
             <FlatList
                 data={this.state.books}
                 style={styles.container}
