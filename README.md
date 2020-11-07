@@ -3,9 +3,9 @@
 A simple app to organize all your media in one place. LifesLibary allows you to add books, movies, and TV shows just by taking a picture.
 
 ## Dependencies
-- Node.JS LTS (https://nodejs.org/en/)
-- Expo (https://docs.expo.io/get-started/installation/)
-- yarn
+- [Node.JS LTS](https://nodejs.org/en/)
+- [Expo](https://docs.expo.io/get-started/installation/)
+- [yarn](https://classic.yarnpkg.com/en/)
 - An android emulator
 
 ## Install Guide
