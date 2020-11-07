@@ -14,27 +14,27 @@ A simple app to organize all your media in one place. LifesLibary allows you to 
 3. Create and firebase project and init a firestore database
 4. Create Firestore.js file in components folder with code below.
 
-`import * as firebase from 'firebase';
-import firestore from 'firebase/firestore'
+    `import * as firebase from 'firebase';
+    import firestore from 'firebase/firestore'
 
-const settings = {timestampsInSnapshots: true};
+    const settings = {timestampsInSnapshots: true};
 
-const firebaseConfig = {
-  apiKey: "XXXXX",
-  authDomain: "XXXXX",
-  databaseURL: "XXXXX",
-  projectId: "XXXXX",
-  storageBucket: "XXXXX",
-  messagingSenderId: "XXXXXXXXXX",
-  appId: "XXXXX",
-  measurementId: "XXXXX"
-};
+    const firebaseConfig = {
+      apiKey: "XXXXX",
+      authDomain: "XXXXX",
+      databaseURL: "XXXXX",
+      projectId: "XXXXX",
+      storageBucket: "XXXXX",
+      messagingSenderId: "XXXXXXXXXX",
+      appId: "XXXXX",
+      measurementId: "XXXXX"
+    };
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
 
-export default firebase;``
+    export default firebase;`
 
 5. Start your android emulator
 6. $expo start
