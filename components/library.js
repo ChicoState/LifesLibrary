@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, FlatList, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Dimensions, Button } from 'react-native';
 import AddBook from './addbook';
 import Create from './Create'
-import firebase from './Firebase';
 import Searchbar from './searchbar'
+
+import * as firebase from 'firebase';
 const numColumns = 3;
+
 
 export default class App extends Component {
   constructor(props) {
@@ -15,6 +17,7 @@ export default class App extends Component {
       books: []
     };
   }
+  
 
   onCollectionUpdate = (querySnapshot) => {
     const books = [];
