@@ -3,6 +3,7 @@ import { Button, Text, View, StyleSheet, FlatList, StatusBar, SafeAreaView, Dime
 import Swiper from 'react-native-swiper/src';
 import Scanner from '../components/scanner';
 import Library from '../components/library';
+import Create from '../components/Create';
 import { Component } from 'react';
 
 export default class App extends React.Component

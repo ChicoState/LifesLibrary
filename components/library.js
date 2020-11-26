@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, FlatList, Dimensions } from 'react-native';
 import AddBook from './addbook';
-import Create from './Create'
 import firebase from './Firebase';
 import Searchbar from './searchbar'
+import BookCommit from './bookCommit'
 const numColumns = 3;
 
 export default class App extends Component {
@@ -38,8 +38,9 @@ export default class App extends Component {
   }
   render() {
     return (
+
         <View style={styles.container}>
-            <Searchbar/>
+                  <BookCommit/>
             <FlatList
                 data={this.state.books}
                 style={styles.container}
@@ -56,9 +57,9 @@ export default class App extends Component {
                     </View>
                     )}}
             />
-            <View style={{ position:'absolute', bottom: 5, right: 5}}>
-                <AddBook/>
 
+            <View style={{ position:'absolute', bottom: 5, right: 5}}>
+              <AddBook/>
             </View>
         </View>
         );

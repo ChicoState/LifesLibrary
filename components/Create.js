@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import firebase from './Firebase';
+import Firebase from './Firebase';
 import { Link, BrowserRouter as Router, Route } from 'react-router-dom';
 
 class Create extends Component {
 
   constructor() {
     super();
-    this.ref = firebase.firestore().collection('book');
+    this.ref = Firebase.firestore().collection('bookRefs');
     this.state = {
       title: '',
       published: '',
@@ -22,9 +22,7 @@ class Create extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-
     const { title, published, author } = this.state;
-
     this.ref.add({
       title,
       published,
@@ -69,7 +67,7 @@ class Create extends Component {
                 <label for="author">Author:</label>
                 <input type="text" class="form-control" name="author" value={author} onChange={this.onChange} placeholder="Author" />
               </div>
-              <button type="submit" class="btn btn-success">Submit</button>
+              <input type="submit" value="Submit"/>
             </form>
           </div>
         </div>

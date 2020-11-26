@@ -19,13 +19,13 @@ export default function App() {
           <View style={styles.modalView}>
             <Text style={styles.modalText}>Add Book Form</Text>
             <View style={{ position:'absolute', top: 5, right: 5}}>
-                {/* <TouchableHighlight
+                { <TouchableHighlight
                 style={{ ...styles.openButton, backgroundColor: '#999' }}
                 onPress={() => {
                     setModalVisible(!modalVisible);
                 }}>
                 <Text style={styles.textStyle}>X</Text>
-                </TouchableHighlight> */}
+                </TouchableHighlight> }
             </View>
 
             <TouchableHighlight

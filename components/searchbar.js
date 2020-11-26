@@ -8,9 +8,11 @@ export default class App extends Component {
 
   updateSearch = (search) => {
     this.setState({ search });
+
   };
 
   render() {
+    
     const { search } = this.state;
 
     return (
