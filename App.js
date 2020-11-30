@@ -6,6 +6,9 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as firebase from 'firebase';
 import firebaseConfig from './components/Firebase';
+import * as SQLite from 'expo-sqlite';
+
+
 // Pages
 import Load from "./pages/Load";
 import Login from "./pages/Login";
