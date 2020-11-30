@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Scanner from './components/scanner';
 import Library from './components/library';
+import Map from './components/map';
 
 //import firebase from "./components/Firebase";
 firebase.auth().onAuthStateChanged(user => {
@@ -35,6 +36,12 @@ const AuthContainer = () => (
 const MainContainer = () => (
   <MainNavigator.Navigator style={styles.navbar} initialRouteName="Library" tabBarPosition='bottom' tabBarOptions={{indicatorStyle: styles.indicator, style: styles.navbar, activeTintColor: 'white', showIcon: true, showLabel: false,}}>
     
+    <MainNavigator.Screen name="Map" component={Map} options={{
+    tabBarLabel: 'Map',
+    tabBarIcon: ({ color }) => (
+    <MaterialCommunityIcons name="map" color={color} size={20} />
+    ),
+    }}/>
     <MainNavigator.Screen name="Library" component={Library} options={{
     tabBarLabel: 'Library',
     tabBarIcon: ({ color }) => (
