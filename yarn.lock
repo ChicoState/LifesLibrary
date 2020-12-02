@@ -8600,6 +8600,11 @@ sprintf-js@~1.0.2:
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
   integrity sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=
 
+sqlite@^4.0.17:
+  version "4.0.17"
+  resolved "https://registry.yarnpkg.com/sqlite/-/sqlite-4.0.17.tgz#54a81b0fe67e02497fad414df57aeccdee1f4305"
+  integrity sha512-PaXTQPFHxM83cjblDm5RLzzqW86UFfR2C3RYghUDzweAsZRwTZAc20CrDrr1vrAh2X61nyAnUaS7XITFuyuzvQ==
+
 sshpk@^1.7.0:
   version "1.16.1"
   resolved "https://registry.yarnpkg.com/sshpk/-/sshpk-1.16.1.tgz#fb661c0bef29b39db40769ee39fa70093d6f6877"

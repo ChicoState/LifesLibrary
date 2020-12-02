@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, FlatList, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Dimensions, Alert } from 'react-native';
+import { SearchBar } from 'react-native-elements';
 import AddBook from './addbook';
 import firebase from './Firebase';
 import Searchbar from './searchbar'
 import BookCommit from './bookCommit'
+import * as SQLite from 'expo-sqlite';
+const db = SQLite.openDatabase('media.db');
 const numColumns = 3;
 
 export default class App extends Component {
@@ -12,7 +15,8 @@ export default class App extends Component {
     this.ref = firebase.firestore().collection('book');
     this.unsubscribe = null;
     this.state = {
-      books: []
+      books: [],
+      search
     };
   }
 
@@ -33,8 +37,22 @@ export default class App extends Component {
    });
   }
 
-  componentDidMount() {
-    this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+  async componentWillMount() {
+    db.transaction(tx => {
+      tx.executeSql(
+        'create table if not exist books  (ISBN text primary key not null, ggLink text, coverLink text);'
+      );
+    });
+    // this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+  }
+
+  async componentDidMount() {
+    const { search } = this.state;
+    await this.fetchData(search);
+  }
+
+  fetchData(search){
+    var query = "SELECT * FROM books WHERE "
   }
   render() {
     return (
