@@ -5,16 +5,32 @@ import * as SQLite from 'expo-sqlite';
 const db = SQLite.openDatabase('media.db');
 export default class Add extends Component {
 
-  // constructor(props) {
-  //   super(props);
-  //   this.ref = Firebase.firestore().collection('bookRefs');
-    // state = {ISBN:'',coverImage:'',GGLink:'',searchString:''}
-
+  constructor(props) {
+    super(props);
+    state = {ISBN:'',coverImage:'',GGLink:'',title:'',desc:'',author:'',pagecnt:0}
+}
     insert(ISBN){
       var ggLink = "https://www.googleapis.com/books/v1/volumes?q=" + ISBN
       var coverLink = 'http://covers.openlibrary.org/b/isbn/' + ISBN + '-M.jpg'
-      var query = "INSERT INTO books (ISBN,ggLink,coverLink) VALUES (?,?,?)";
-      var params = [ISBN,ggLink,coverLink];
+      fetch(`ggLink`)
+          .then(response => response.json())
+          .then(responseJson => {
+              this.setState({
+                ISBN: isbn,
+                coverImage: coverLink,
+                GGLink: ggLink,
+                title: responseJson.items[0].volumeInfo.title,
+                desc: responseJson.items[0].volumeInfo.description,
+                author: responseJson.items[0].volumeInfo.authors,
+                pagecnt: responseJson.items[0].volumeInfo.pageCount,
+               });
+              callback();
+          })
+      .catch(error => {
+        console.error(error);
+      });
+      var query = "INSERT INTO books (ISBN,ggLink,coverLink,title, desc, author, pagecnt) VALUES (?,?,?,?,?,?,?)";
+      var params = [this.state.ISBN,this.state.ggLink,this.state.coverLink,this.state.title,this.state.desc,this.state.authors,this.state.pagecnt];
       db.transaction((tx) => {
         tx.executeSql(query,params, (tx, results) => {
             console.log(results);

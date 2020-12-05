@@ -12,38 +12,20 @@ const numColumns = 3;
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.ref = firebase.firestore().collection('book');
     this.unsubscribe = null;
     this.state = {
-      books: [],
-      search
+      dataTodo: [],
+      search: ""
     };
-  }
-
-  onCollectionUpdate = (querySnapshot) => {
-    const books = [];
-    querySnapshot.forEach((doc) => {
-      const { title, author, published } = doc.data();
-      books.push({
-        key: doc.id,
-        doc, // DocumentSnapshot
-        title,
-        published,
-        author,
-      });
-    });
-    this.setState({
-      books
-   });
   }
 
   async componentWillMount() {
     db.transaction(tx => {
       tx.executeSql(
-        'create table if not exist books  (ISBN text primary key not null, ggLink text, coverLink text);'
+        'create table if not exist books  (ISBN text primary key not null, ggLink text, coverLink text, title text, desc text, author text, pagecnt integer);'
       );
     });
-    // this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+    this.setState({loading: false})
   }
 
   async componentDidMount() {
@@ -51,16 +33,36 @@ export default class App extends Component {
     await this.fetchData(search);
   }
 
+  async handleSearch(val){
+    this.setState({search: val});
+    await this.fetchData(val);
+  }
   fetchData(search){
-    var query = "SELECT * FROM books WHERE "
+    var query = "SELECT * FROM books WHERE title LIKE '%" + search + "%'";
+    var params = [];
+    db.transaction((tx) =>{
+      tx.executeSql(query, params, (tx, results) => {
+        conlose.log(results);
+        if(results.rows._array.length > 0){
+          this.setState({
+            dataTodo: results.rows._array;
+          });
+        }, function (tx, err) {
+            Alert.alert("Welcome");
+        }
+      });
+    });
   }
   render() {
     return (
 
         <View style={styles.container}>
-                  <BookCommit/>
+        <SearchBar
+          placeholder="Search by name"
+          onChangeText={(val) => this.handleSearch(val)} value={this.state.search} value={this.state.search}
+          containerStyle={{borderWidth: 2, marginTop: 10}}
             <FlatList
-                data={this.state.books}
+                data={this.state.dataTodo}
                 style={styles.container}
                 numColumns={numColumns}
                 showsVerticalScrollIndicator={false}
@@ -72,12 +74,11 @@ export default class App extends Component {
                     return (
                     <View style={styles.item}>
                         <Text style={styles.itemText}>{item.title}</Text>
+                        <Text style={styles.itemText}>{item.author}</Text>
                     </View>
                     )}}
             />
-
             <View style={{ position:'absolute', bottom: 5, right: 5}}>
-              <AddBook/>
             </View>
         </View>
         );
