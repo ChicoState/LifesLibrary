@@ -1,50 +1,19 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, FlatList, Dimensions, Button } from 'react-native';
-import AddBook from './addbook';
-import Create from './Create'
-import Searchbar from './searchbar'
+import UL from "./db";
 
-import * as firebase from 'firebase';
 const numColumns = 3;
-
 
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.ref = firebase.firestore().collection('book');
-    this.unsubscribe = null;
-    this.state = {
-      books: []
-    };
-  }
-  
-
-  onCollectionUpdate = (querySnapshot) => {
-    const books = [];
-    querySnapshot.forEach((doc) => {
-      const { title, author, published } = doc.data();
-      books.push({
-        key: doc.id,
-        doc, // DocumentSnapshot
-        title,
-        published,
-        author,
-      });
-    });
-    this.setState({
-      books
-   });
   }
 
-  componentDidMount() {
-    this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
-  }
   render() {
     return (
         <View style={styles.container}>
-            <Searchbar/>
             <FlatList
-                data={this.state.books}
+                data={{}}
                 style={styles.container}
                 numColumns={numColumns}
                 showsVerticalScrollIndicator={false}
@@ -59,10 +28,6 @@ export default class App extends Component {
                     </View>
                     )}}
             />
-            <View style={{ position:'absolute', bottom: 5, right: 5}}>
-                <AddBook/>
-
-            </View>
         </View>
         );
     }
