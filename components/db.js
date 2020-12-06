@@ -1,16 +1,8 @@
-import React, { Component, useState, useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList, Dimensions, Button, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View, FlatList, Dimensions, Button } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
-
 const numColumns = 3;
-
-const Item = ({ item, onPress, style }) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-    <Text style={styles.title}>{item.title}</Text>
-  </TouchableOpacity>
-);
-
 
 export default class Lib extends React.Component{
   constructor(props) {

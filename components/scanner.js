@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import { Button, View, Text, StyleSheet, Modal, TextInput, useEffect, useContext, ActivityIndicator, TouchableHighlight } from 'react-native';
+import React from 'react';
+import { Button, View, Text, StyleSheet, Modal, ActivityIndicator } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import AsyncStorage from '@react-native-community/async-storage';

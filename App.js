@@ -1,12 +1,11 @@
 import * as React from "react";
-import { Button, View, Text, StyleSheet, Modal, TextInput, useEffect, useContext } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 // Pages
 import Scanner from './components/scanner';
-import Library from './components/library';
 import Map from './components/map';
 import UL from './components/db';
 
