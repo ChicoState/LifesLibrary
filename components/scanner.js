@@ -2,26 +2,34 @@ import React, {useState} from 'react';
 import { Button, View, Text, StyleSheet, Modal, TextInput, useEffect, useContext, ActivityIndicator, TouchableHighlight } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class ScannerScreen extends React.Component{
 
   constructor(props) {
     super(props);
     this.getBook = this.getBook.bind(this);
+    this.state= { 
+      library: [],
+      book: {
+        isbn: "isbn",
+        author: "author",
+        title: "title",
+        description: "description",
+      },
+      hasCameraPermission: null, // if app has permissions to acess camera
+      isScanned: false, // scanned
+      show: false,
+      bookInfo: 'title',
+      };
   }
-  
-  // Component State
-  state = {
-    hasCameraPermission: null, // if app has permissions to acess camera
-    isScanned: false, // scanned
-    show: false,
-    bookInfo: [],
-  }
+
   async componentDidMount() {
     // ask for camera permission
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     console.log(status);
     this.setState({ hasCameraPermission: status === "granted" ? true : false });
+
   }
 
   handleBarCodeScanned = ({ data }) => {
@@ -32,14 +40,47 @@ export default class ScannerScreen extends React.Component{
 
   getBook(isbn, callback) {
     fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${encodeURIComponent(isbn)}`)
-        .then(response => response.json())
-        .then(responseJson => {
-            this.setState({ bookInfo: responseJson.items[0].volumeInfo.title});
-            callback();
-        })
+      .then(response => response.json())
+      .then(responseJson => {
+          this.setState({ book: {
+            isbn: isbn, 
+            author: responseJson.items[0].volumeInfo.authors, 
+            title: responseJson.items[0].volumeInfo.title, 
+            description: responseJson.items[0].volumeInfo.description}});
+          callback();
+      })
     .catch(error => {
       console.error(error);
     });
+  }
+
+  async addtolibrary(){
+    await this.load();
+    var joined = this.state.library.concat(this.state.book);
+    this.setState({ library: joined });
+    this.save();
+  }
+
+  save = async() => {
+    try {
+      await AsyncStorage.setItem("library", JSON.stringify(this.state.library));
+    }
+    catch (err) {
+      alert(err);
+    }
+  }
+
+  load = async () => {
+    try {
+      let library = await AsyncStorage.getItem("library");
+      if (library !== null) {
+        var joined = [].concat(JSON.parse(library));
+        this.setState({ library: joined })
+      }
+    }
+    catch (err) {
+      alert(err);
+    }
   }
 
   alertInfo = () => { //Event happens after book information is returned by getBook
@@ -76,8 +117,12 @@ export default class ScannerScreen extends React.Component{
     <View style = {styles.container}>
       <Modal visible={this.state.show} handleClose={this.hideModal}>
         <View style = {styles.container}>
-          <Text>Scanned: {this.state.bookInfo}</Text>
+          <Text>Scanned: {this.state.book.isbn}</Text>
+          <Text>Author: {this.state.book.author}</Text>
+          <Text>Title: {this.state.book.title}</Text>
+          <Text>Description: {this.state.book.description}</Text>
           <Button title="Close" onPress={() => {this.hideModal();}}/>
+          <Button title="Add To Library" onPress={() => {this.addtolibrary()}}/>
         </View>
       </Modal>
       <BarCodeScanner

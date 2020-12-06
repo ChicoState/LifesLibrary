@@ -75,8 +75,7 @@ export default class Lib extends React.Component{
     try {
       let library = await AsyncStorage.getItem("library");
       if (library !== null) {
-        var joined = this.state.library.concat(JSON.parse(library));
-        this.setState({ library: joined })
+        this.setState({ library: JSON.parse(library) })
       }
     }
     catch (err) {
@@ -103,6 +102,7 @@ export default class Lib extends React.Component{
         />
         <Button onPress={() => this.clearlibrary()} title="clear"/>
         <Button onPress={() => this.sample()} title="sample"/>
+        <Button onPress={() => this.load()} title="refresh"/>
       </View>
     )
   }
