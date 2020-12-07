@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, Dimensions, Button } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Dimensions, Button, TouchableOpacity, Modal, Image, ImageBackground, SafeAreaView } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const numColumns = 3;
@@ -7,14 +7,21 @@ const numColumns = 3;
 export default class Lib extends React.Component{
   constructor(props) {
     super(props);
-    this.state= { library: [],
+    this.state= { library: [], modalVisible: false,
       book: {
         isbn: "isbn",
         author: "author",
         title: "title",
         description: "description",
-  }};
+      }
   };
+  };
+
+  inspectBook(book){
+    this.setState({book: book})
+    this.setState({modalVisible: true})
+    console.log(book);
+  }
 
   componentDidMount(){
     this.load();
@@ -44,16 +51,12 @@ export default class Lib extends React.Component{
       description: description,
     }
     });
-    this.save(this.state.book);
-  }
-
-  addtolibrary(book){
-    var joined = this.state.library.concat(book);
+    var joined = this.state.library.concat(this.state.book);
     this.setState({ library: joined })
+    this.save();
   }
 
-  save = async(book) => {
-    this.addtolibrary(book);
+  save = async() => {
     console.log(this.state.library);
     try {
       await AsyncStorage.setItem("library", JSON.stringify(this.state.library));
@@ -77,7 +80,25 @@ export default class Lib extends React.Component{
 
   render(){
     return (
-      <View style={{alignItems:"center",flex:1,justifyContent:"center"}}>
+      <SafeAreaView style={{alignItems:"center",flex:1,justifyContent:"center"}}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.modalVisible}        
+        >
+          {/* <ImageBackground
+            source={require("../assets/reading.png")}
+            style={{width: "100%", height: "100%"}}
+          > */}
+          <View style={{flex: 1, justifyContent: "flex-end"}}>
+            <Button title="close" onPress={()=> this.setState({modalVisible: false})} />
+            <View style={{height: "50%", backgroundColor: "#fff", alignItems: "center"}}>
+        <Text style={{textAlign: "center"}}>{this.state.book.title}{"\n"}{this.state.book.author}{"\n"}{this.state.book.description}</Text>
+            </View>
+          </View>
+          {/* </ImageBackground> */}
+          
+        </Modal>
 
         <FlatList 
           style={styles.container}
@@ -85,17 +106,22 @@ export default class Lib extends React.Component{
           data={this.state.library}
           keyExtractor={( item ) => item.isbn}
           renderItem = {( {item} ) => (
-            <View style={styles.item}>
-              <Text style={styles.itemText}>{item.title}</Text>
-              <Text style={styles.itemText}>{item.isbn}</Text>
-              <Text style={styles.itemText}>{item.author}</Text>
-            </View>
+            <TouchableOpacity 
+              style={styles.item}
+              onPress={()=>this.inspectBook(item)}       
+            >
+              <Text style={styles.itemText}>{item.title} {"\n\n"} {item.author}</Text>
+              
+            </TouchableOpacity>
           )}
         />
-        <Button onPress={() => this.clearlibrary()} title="clear"/>
-        <Button onPress={() => this.sample()} title="sample"/>
-        <Button onPress={() => this.load()} title="refresh"/>
-      </View>
+        <View style={{flexDirection: "row"}}>
+          <Button onPress={() => this.clearlibrary()} title="clear"/>
+          <Button onPress={() => this.sample()} title="sample"/>
+          <Button onPress={() => this.load()} title="refresh"/>
+        </View>
+        
+      </SafeAreaView>
     )
   }
 }
@@ -119,5 +145,10 @@ const styles = StyleSheet.create({
   },
   itemText: {
       color: '#fff',
+      textAlign: "center"
   },
-});
+  inspect: {
+    justifyContent: 'center', 
+    alignItems: 'center'
+  }
+}); 
