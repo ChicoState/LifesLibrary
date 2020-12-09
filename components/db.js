@@ -14,11 +14,12 @@ export default class Lib extends React.Component{
         author: "author",
         title: "title",
         description: "description",
+        coverArt: ""
       }
   };
   };
 
-  
+
 
   componentDidMount(){
     this.load();
@@ -39,7 +40,7 @@ export default class Lib extends React.Component{
       console.log(library);
       library.forEach((book) => {
         if (book.title.match(regex)){
-          results.push(book);       
+          results.push(book);
         };
       });
     }
@@ -60,17 +61,18 @@ export default class Lib extends React.Component{
   }
 
   async sample(){
-    await this.entry("0439023521", "Suzanne Collins", "The Hunger Games", "In the ruins of a place once known as North America lies the nation of Panem, a shining Capitol surrounded by twelve outlying districts. The Capitol is harsh and cruel and keeps the districts in line by forcing them all to send one boy and one girl between the ages of twelve and eighteen to participate in the annual Hunger Games, a fight to the death on live TV. Sixteen-year-old Katniss Everdeen, who lives alone with her mother and younger sister, regards it as a death sentence when she is forced to represent her district in the Games. But Katniss has been close to dead before - and survival, for her, is second nature. Without really meaning to, she becomes a contender. But if she is to win, she will have to start making choices that weigh survival against humanity and life against love.");
-    await this.entry("0765376679", "Brandon Sanderson", "The Way of Kings: Book One of the Stormlight Archive", "Description");
-    await this.entry("038552885X", "Stephen King", "The Stand", "Description  ");
+    await this.entry("0439023521", "Suzanne Collins", "The Hunger Games", "In the ruins of a place once known as North America lies the nation of Panem, a shining Capitol surrounded by twelve outlying districts. The Capitol is harsh and cruel and keeps the districts in line by forcing them all to send one boy and one girl between the ages of twelve and eighteen to participate in the annual Hunger Games, a fight to the death on live TV. Sixteen-year-old Katniss Everdeen, who lives alone with her mother and younger sister, regards it as a death sentence when she is forced to represent her district in the Games. But Katniss has been close to dead before - and survival, for her, is second nature. Without really meaning to, she becomes a contender. But if she is to win, she will have to start making choices that weigh survival against humanity and life against love.","http://covers.openlibrary.org/b/isbn/0439023521-M.jpg");
+    await this.entry("0765376679", "Brandon Sanderson", "The Way of Kings: Book One of the Stormlight Archive", "Description", "http://covers.openlibrary.org/b/isbn/0765376679-M.jpg");
+    await this.entry("038552885X", "Stephen King", "The Stand", "Description  ", "http://covers.openlibrary.org/b/isbn/038552885X-M.jpg");
   }
 
-  entry = async(isbn, author, title, description) => {
+  entry = async(isbn, author, title, description, coverArt) => {
     await this.setState({book: {
       isbn: isbn,
       author: author,
       title: title,
       description: description,
+      coverArt: coverArt,
     }
     });
     var joined = this.state.library.concat(this.state.book);
@@ -106,7 +108,7 @@ export default class Lib extends React.Component{
         <Modal
           animationType="slide"
           transparent={true}
-          visible={this.state.modalVisible}        
+          visible={this.state.modalVisible}
         >
           {/* <ImageBackground
             source={require("../assets/reading.png")}
@@ -125,29 +127,30 @@ export default class Lib extends React.Component{
           style={{ height: 40, borderColor: 'gray', borderWidth: 1, width: "100%"}}
           onSubmitEditing={(event)=> this.searchLibrary(event.nativeEvent.text)}
         />
-          
+
         {!this.state.searching ?
-          <FlatList 
+          <FlatList
           style={styles.container}
           numColumns='3'
           data={this.state.library}
           keyExtractor={( item ) => item.isbn}
           renderItem = {( {item} ) => (
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.item}
               onPress={()=>this.inspectBook(item)}>
-              <Text style={styles.itemText}>{item.title + "\n\n" + item.author}</Text>
+              <ImageBackground source={{ uri: item.coverArt }} style={styles.item}>
+              </ImageBackground>
             </TouchableOpacity>
           )}/> :
           <View style ={{flex:1}}>
-            
-            <FlatList 
+
+            <FlatList
             style={styles.container}
             numColumns='3'
             data={this.state.search}
             keyExtractor={( item ) => item.isbn}
             renderItem = {( {item} ) => (
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={styles.item}
                 onPress={()=>this.inspectBook(item)}>
                 <Text style={styles.itemText}>{item.title + "\n\n" + item.author}</Text>
@@ -162,7 +165,7 @@ export default class Lib extends React.Component{
           <Button onPress={() => this.sample()} title="sample"/>
           <Button onPress={() => this.componentDidMount()} title="refresh"/>
         </View>
-        
+
       </SafeAreaView>
     )
   }
@@ -190,7 +193,15 @@ const styles = StyleSheet.create({
       textAlign: "center"
   },
   inspect: {
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center'
-  }
-}); 
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+    width: (Dimensions.get('window').width / numColumns - (3)) - 3,
+    height: (Dimensions.get('window').width / numColumns * 1.5) - 3,
+    margin: 1.5,
+  },
+});

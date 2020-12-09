@@ -9,13 +9,14 @@ export default class ScannerScreen extends React.Component{
   constructor(props) {
     super(props);
     this.getBook = this.getBook.bind(this);
-    this.state= { 
+    this.state= {
       library: [],
       book: {
         isbn: "isbn",
         author: "author",
         title: "title",
         description: "description",
+        coverArt: "http://covers.openlibrary.org/b/isbn/",
       },
       hasCameraPermission: null, // if app has permissions to acess camera
       isScanned: false, // scanned
@@ -43,10 +44,11 @@ export default class ScannerScreen extends React.Component{
       .then(response => response.json())
       .then(responseJson => {
           this.setState({ book: {
-            isbn: isbn, 
-            author: responseJson.items[0].volumeInfo.authors, 
-            title: responseJson.items[0].volumeInfo.title, 
-            description: responseJson.items[0].volumeInfo.description}});
+            isbn: isbn,
+            author: responseJson.items[0].volumeInfo.authors,
+            title: responseJson.items[0].volumeInfo.title,
+            description: responseJson.items[0].volumeInfo.description,
+            coverArt: responseJson.items[0].volumeInfo.imageLinks.thumbnail}});
           callback();
       })
     .catch(error => {
@@ -57,6 +59,7 @@ export default class ScannerScreen extends React.Component{
   async addtolibrary(){
     await this.load();
     var joined = this.state.library.concat(this.state.book);
+    console.log(this.state.book)
     this.setState({ library: joined });
     this.save();
   }
@@ -106,14 +109,14 @@ export default class ScannerScreen extends React.Component{
     }
 
     if(hasCameraPermission === false){
-      return ( 
+      return (
         <View style = {styles.container}>
          <Text>Camera Permission Required</Text>
-        </View> 
+        </View>
       );
     }
-    
-    return (  
+
+    return (
     <View style = {styles.container}>
       <Modal visible={this.state.show} handleClose={this.hideModal}>
         <View style = {styles.container}>
@@ -125,7 +128,7 @@ export default class ScannerScreen extends React.Component{
             <Button title="Close" onPress={() => {this.hideModal();}}/>
             <Button title="Add To Library" onPress={() => {this.addtolibrary()}}/>
           </View>
-          
+
         </View>
       </Modal>
       <BarCodeScanner
@@ -134,7 +137,7 @@ export default class ScannerScreen extends React.Component{
         />
     </View>
     );
-    
+
   }
 }
 
