@@ -104,23 +104,20 @@ export default class Lib extends React.Component{
 
   render(){
     return (
-      <SafeAreaView style={{alignItems:"center",flex:1,justifyContent:"center"}}>
+      <SafeAreaView style={{alignItems:"center",flex:1,justifyContent:"center",}}>
         <Modal
           animationType="slide"
           transparent={true}
           visible={this.state.modalVisible}
         >
-          {/* <ImageBackground
-            source={require("../assets/reading.png")}
-            style={{width: "100%", height: "100%"}}
-          > */}
-          <View style={{flex: 1, justifyContent: "flex-end"}}>
+          <View style={{flex: 1, justifyContent: "flex-end", }}>
             <Button title="close" onPress={()=> this.setState({modalVisible: false})} />
-            <View style={{height: "50%", backgroundColor: "#fff", alignItems: "center"}}>
-              <Text style={{textAlign: "center"}}>{this.state.book.title + "\n" + this.state.book.author + "\n" + this.state.book.description + "\n" + "ISBN: " + this.state.book.isbn}</Text>
+            <View style={{height: "50%", backgroundColor: "#fff", alignItems: "center", padding:20,}}>
+              <Text style={styles.itemTitle}>{this.state.book.title + "\n"}</Text>
+              <Text style={styles.itemAuthor}>{this.state.book.author + "\n"}</Text>
+              <Text style={styles.itemText}>{"\t" + this.state.book.description + "\n\n" + "ISBN: " + this.state.book.isbn}</Text>
             </View>
           </View>
-          {/* </ImageBackground> */}
         </Modal>
 
         <TextInput
@@ -153,7 +150,8 @@ export default class Lib extends React.Component{
               <TouchableOpacity
                 style={styles.item}
                 onPress={()=>this.inspectBook(item)}>
-                <Text style={styles.itemText}>{item.title + "\n\n" + item.author}</Text>
+                <ImageBackground source={{ uri: item.coverArt }} style={styles.item}>
+                </ImageBackground>
               </TouchableOpacity>
             )}/>
             <Text>Searching</Text>
@@ -189,7 +187,16 @@ const styles = StyleSheet.create({
       backgroundColor: 'transparent',
   },
   itemText: {
-      color: '#fff',
+      textAlign: "left"
+  },
+  itemTitle: {
+      fontSize: 20,
+      fontWeight: "bold",
+      textAlign: "center"
+  },
+  itemAuthor: {
+      fontSize: 15,
+      fontWeight: "bold",
       textAlign: "center"
   },
   inspect: {
