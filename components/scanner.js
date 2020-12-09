@@ -121,8 +121,11 @@ export default class ScannerScreen extends React.Component{
           <Text>Author: {this.state.book.author}</Text>
           <Text>Title: {this.state.book.title}</Text>
           <Text>Description: {this.state.book.description}</Text>
-          <Button title="Close" onPress={() => {this.hideModal();}}/>
-          <Button title="Add To Library" onPress={() => {this.addtolibrary()}}/>
+          <View style={{flexDirection: "row"}}>
+            <Button title="Close" onPress={() => {this.hideModal();}}/>
+            <Button title="Add To Library" onPress={() => {this.addtolibrary()}}/>
+          </View>
+          
         </View>
       </Modal>
       <BarCodeScanner

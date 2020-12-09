@@ -1,13 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, Dimensions, Button, TouchableOpacity, Modal, Image, ImageBackground, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Dimensions, Button, TouchableOpacity, Modal, Image, ImageBackground, SafeAreaView, TextInput } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+
 
 const numColumns = 3;
 
 export default class Lib extends React.Component{
   constructor(props) {
     super(props);
-    this.state= { library: [], modalVisible: false,
+    this.state= { library: [], modalVisible: false, searching: false, search: [],
       book: {
         isbn: "isbn",
         author: "author",
@@ -17,14 +18,34 @@ export default class Lib extends React.Component{
   };
   };
 
-  inspectBook(book){
-    this.setState({book: book})
-    this.setState({modalVisible: true})
-    console.log(book);
-  }
+  
 
   componentDidMount(){
     this.load();
+  }
+
+  inspectBook(book){
+    this.setState({book: book});
+    this.setState({modalVisible: true});
+    console.log(book);
+  }
+
+  searchLibrary = async(input) =>{
+    var library = this.state.library;
+    var regex = new RegExp(input, "i");
+    var results = [];
+    if (input){
+      this.setState({searching: true});
+      library.forEach((book) => {
+        if (book.title.match(regex) || book.author.match(regex)){
+          results.push(book);       
+        };
+      });
+    }
+    else{
+      this.setState({searching: false});
+    }
+    this.setState({ search: results }, ()=>{console.log(this.state.search);});
   }
 
   clearlibrary = async () => {
@@ -52,7 +73,7 @@ export default class Lib extends React.Component{
     }
     });
     var joined = this.state.library.concat(this.state.book);
-    this.setState({ library: joined })
+    this.setState({ library: joined });
     this.save();
   }
 
@@ -70,7 +91,7 @@ export default class Lib extends React.Component{
     try {
       let library = await AsyncStorage.getItem("library");
       if (library !== null) {
-        this.setState({ library: JSON.parse(library) })
+        this.setState({ library: JSON.parse(library) });
       }
     }
     catch (err) {
@@ -93,14 +114,19 @@ export default class Lib extends React.Component{
           <View style={{flex: 1, justifyContent: "flex-end"}}>
             <Button title="close" onPress={()=> this.setState({modalVisible: false})} />
             <View style={{height: "50%", backgroundColor: "#fff", alignItems: "center"}}>
-        <Text style={{textAlign: "center"}}>{this.state.book.title}{"\n"}{this.state.book.author}{"\n"}{this.state.book.description}</Text>
+              <Text style={{textAlign: "center"}}>{this.state.book.title + "\n" + this.state.book.author + "\n" + this.state.book.description + "\n" + "ISBN: " + this.state.book.isbn}</Text>
             </View>
           </View>
           {/* </ImageBackground> */}
-          
         </Modal>
 
-        <FlatList 
+        <TextInput
+          style={{ height: 40, borderColor: 'gray', borderWidth: 1, width: "100%"}}
+          onSubmitEditing={(event)=> this.searchLibrary(event.nativeEvent.text)}
+        />
+          
+        {!this.state.searching ?
+          <FlatList 
           style={styles.container}
           numColumns='3'
           data={this.state.library}
@@ -108,13 +134,24 @@ export default class Lib extends React.Component{
           renderItem = {( {item} ) => (
             <TouchableOpacity 
               style={styles.item}
-              onPress={()=>this.inspectBook(item)}       
-            >
-              <Text style={styles.itemText}>{item.title} {"\n\n"} {item.author}</Text>
-              
+              onPress={()=>this.inspectBook(item)}>
+              <Text style={styles.itemText}>{item.title + "\n\n" + item.author}</Text>
             </TouchableOpacity>
-          )}
-        />
+          )}/> :
+          <FlatList 
+          style={styles.container}
+          numColumns='3'
+          data={this.state.search}
+          keyExtractor={( item ) => item.isbn}
+          renderItem = {( {item} ) => (
+            <TouchableOpacity 
+              style={styles.item}
+              onPress={()=>this.inspectBook(item)}>
+              <Text style={styles.itemText}>{item.title + "\n\n" + item.author}</Text>
+            </TouchableOpacity>
+          )}/>
+        }
+
         <View style={{flexDirection: "row"}}>
           <Button onPress={() => this.clearlibrary()} title="clear"/>
           <Button onPress={() => this.sample()} title="sample"/>
