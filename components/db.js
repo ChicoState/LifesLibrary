@@ -30,14 +30,15 @@ export default class Lib extends React.Component{
     console.log(book);
   }
 
-  searchLibrary = async(input) =>{
+  searchLibrary(input){
     var library = this.state.library;
     var regex = new RegExp(input, "i");
     var results = [];
     if (input){
       this.setState({searching: true});
+      console.log(library);
       library.forEach((book) => {
-        if (book.title.match(regex) || book.author.match(regex)){
+        if (book.title.match(regex)){
           results.push(book);       
         };
       });
@@ -45,7 +46,7 @@ export default class Lib extends React.Component{
     else{
       this.setState({searching: false});
     }
-    this.setState({ search: results }, ()=>{console.log(this.state.search);});
+    this.setState({ search: results });
   }
 
   clearlibrary = async () => {
@@ -138,24 +139,28 @@ export default class Lib extends React.Component{
               <Text style={styles.itemText}>{item.title + "\n\n" + item.author}</Text>
             </TouchableOpacity>
           )}/> :
-          <FlatList 
-          style={styles.container}
-          numColumns='3'
-          data={this.state.search}
-          keyExtractor={( item ) => item.isbn}
-          renderItem = {( {item} ) => (
-            <TouchableOpacity 
-              style={styles.item}
-              onPress={()=>this.inspectBook(item)}>
-              <Text style={styles.itemText}>{item.title + "\n\n" + item.author}</Text>
-            </TouchableOpacity>
-          )}/>
+          <View style ={{flex:1}}>
+            
+            <FlatList 
+            style={styles.container}
+            numColumns='3'
+            data={this.state.search}
+            keyExtractor={( item ) => item.isbn}
+            renderItem = {( {item} ) => (
+              <TouchableOpacity 
+                style={styles.item}
+                onPress={()=>this.inspectBook(item)}>
+                <Text style={styles.itemText}>{item.title + "\n\n" + item.author}</Text>
+              </TouchableOpacity>
+            )}/>
+            <Text>Searching</Text>
+          </View>
         }
 
         <View style={{flexDirection: "row"}}>
           <Button onPress={() => this.clearlibrary()} title="clear"/>
           <Button onPress={() => this.sample()} title="sample"/>
-          <Button onPress={() => this.load()} title="refresh"/>
+          <Button onPress={() => this.componentDidMount()} title="refresh"/>
         </View>
         
       </SafeAreaView>
