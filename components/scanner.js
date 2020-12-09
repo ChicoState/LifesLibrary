@@ -1,48 +1,167 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
+import React from 'react';
+import { Button, View, Text, StyleSheet, Modal, ActivityIndicator } from 'react-native';
+import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import { app } from 'firebase';
+import AsyncStorage from '@react-native-community/async-storage';
 
-function App(){
-  const [hasPermission, setHasPermission] = useState(null);
-  const [scanned, setScanned] = useState(false);
+export default class ScannerScreen extends React.Component{
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
-    })();
-  }, []);
+  constructor(props) {
+    super(props);
+    this.getBook = this.getBook.bind(this);
+    this.state= {
+      library: [],
+      book: {
+        isbn: "isbn",
+        author: "author",
+        title: "title",
+        description: "description",
+        coverArt: "http://covers.openlibrary.org/b/isbn/",
+      },
+      hasCameraPermission: null, // if app has permissions to acess camera
+      isScanned: false, // scanned
+      show: false,
+      bookInfo: 'title',
+      };
+  }
 
-  const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+  async componentDidMount() {
+    // ask for camera permission
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    console.log(status);
+    this.setState({ hasCameraPermission: status === "granted" ? true : false });
+
+  }
+
+  handleBarCodeScanned = ({ data }) => {
+    var isbn = data;
+    this.setState({ scanned: true });
+    this.getBook(isbn, this.alertInfo);
   };
 
-  if (hasPermission === null) {
-    return <Text>Requesting for camera permission</Text>;
-  }
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+  getBook(isbn, callback) {
+    fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${encodeURIComponent(isbn)}`)
+      .then(response => response.json())
+      .then(responseJson => {
+          this.setState({ book: {
+            isbn: isbn,
+            author: responseJson.items[0].volumeInfo.authors,
+            title: responseJson.items[0].volumeInfo.title,
+            description: responseJson.items[0].volumeInfo.description,
+            coverArt: responseJson.items[0].volumeInfo.imageLinks.thumbnail}});
+          callback();
+      })
+    .catch(error => {
+      console.error(error);
+    });
   }
 
-  return (
-    <View style={styles.container}>
-      <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={StyleSheet.absoluteFillObject}/>
-      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
-    </View>
-  );
-}
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: "#000",
-      marginVertical: 0,
+  async addtolibrary(){
+    await this.load();
+    var joined = this.state.library.concat(this.state.book);
+    console.log(this.state.book)
+    this.setState({ library: joined });
+    this.save();
+  }
+
+  save = async() => {
+    try {
+      await AsyncStorage.setItem("library", JSON.stringify(this.state.library));
     }
-  });
+    catch (err) {
+      alert(err);
+    }
+  }
 
-export default App;
+  load = async () => {
+    try {
+      let library = await AsyncStorage.getItem("library");
+      if (library !== null) {
+        var joined = [].concat(JSON.parse(library));
+        this.setState({ library: joined })
+      }
+    }
+    catch (err) {
+      alert(err);
+    }
+  }
+
+  alertInfo = () => { //Event happens after book information is returned by getBook
+    this.showModal();
+  }
+
+  showModal = () => {
+    this.setState({ show: true });
+  };
+
+  hideModal = () => {
+    this.setState({ show: false });
+    this.setState({ scanned: false });
+  };
+
+  render(){
+    const { hasCameraPermission, isScanned } = this.state;
+    if(hasCameraPermission === null){
+      console.log("Requesting permission");
+      return (
+        <ActivityIndicator />
+      );
+    }
+
+    if(hasCameraPermission === false){
+      return (
+        <View style = {styles.container}>
+         <Text>Camera Permission Required</Text>
+        </View>
+      );
+    }
+
+    return (
+    <View style = {styles.container}>
+      <Modal visible={this.state.show} handleClose={this.hideModal}>
+        <View style = {styles.container}>
+          <Text>Scanned: {this.state.book.isbn}</Text>
+          <Text>Author: {this.state.book.author}</Text>
+          <Text>Title: {this.state.book.title}</Text>
+          <Text>Description: {this.state.book.description}</Text>
+          <View style={{flexDirection: "row"}}>
+            <Button title="Close" onPress={() => {this.hideModal();}}/>
+            <Button title="Add To Library" onPress={() => {this.addtolibrary()}}/>
+          </View>
+
+        </View>
+      </Modal>
+      <BarCodeScanner
+        onBarCodeScanned = { isScanned ? undefined : this.handleBarCodeScanned }
+        style = {StyleSheet.absoluteFill}
+        />
+    </View>
+    );
+
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    marginVertical: 0,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+});

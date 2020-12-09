@@ -1,38 +1,61 @@
-import React from "react";
-import { Button, View, Text } from 'react-native';
+import * as React from "react";
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 // Pages
+import Scanner from './components/scanner';
+import Map from './components/map';
+import UL from './components/db';
 
-import Load from "./pages/Load";
-import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
-import Home from "./pages/Home";
 
-// Firebase Code
-// import * as firebase from 'firebase';
-import firebase from "./components/Firebase";
-// Initialize Firebase
-// if (!firebase.apps.length) {
-//   firebase.initializeApp(fireconfig);
-// }
-// firebase.analytics();
 
-const Stack = createStackNavigator();
 
-function App() {
-  return (
+const MainNavigator = createMaterialTopTabNavigator();
 
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Load">
-        <Stack.Screen name="Load" component={Load} />
-        <Stack.Screen name="SignUp" component={SignUp} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Home" component={Home} options={{ title: "Home", headerShown: false, }}/>
-      </Stack.Navigator>
-    </NavigationContainer>
+const MainContainer = () => (
+  <MainNavigator.Navigator style={styles.navbar} initialRouteName="Library" tabBarPosition='bottom' tabBarOptions={{indicatorStyle: styles.indicator, style: styles.navbar, activeTintColor: 'white', showIcon: true, showLabel: false,}}>
+    
+    <MainNavigator.Screen name="Map" component={Map} options={{
+    tabBarLabel: 'Map',
+    tabBarIcon: ({ color }) => (
+    <MaterialCommunityIcons name="map" color={color} size={20} />
+    ),
+    }}/>
+    <MainNavigator.Screen name="Library" component={UL} options={{
+    tabBarLabel: "Library",
+    tabBarIcon: ({ color }) => (
+    <MaterialCommunityIcons name="book" color={color} size={20} />
+    ),
+    }}/>
+    <MainNavigator.Screen name="Scanner" component={Scanner} options={{
+    tabBarLabel: 'Scanner',
+    tabBarIcon: ({ color }) => (
+    <MaterialCommunityIcons name="camera" color={color} size={20} />
+    ),
+    }}/>
+  </MainNavigator.Navigator>
   );
+
+export default class App extends React.Component  {
+
+  render()
+  {
+    return (
+      <NavigationContainer>
+        <MainContainer/>
+      </NavigationContainer>
+    );
+  }
 }
 
-export default App;
+const styles = StyleSheet.create({
+  navbar: {
+    backgroundColor: '#060606FF',
+  },
+  indicator: {
+    backgroundColor: 'red',
+    height: 5,
+  },
+})
