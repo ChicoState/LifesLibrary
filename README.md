@@ -1,4 +1,5 @@
 # LifesLibrary
+[![Build Status](https://travis-ci.com/ChicoState/LifesLibrary.svg?branch=master)](https://travis-ci.com/ChicoState/LifesLibrary)
 
 A simple app to organize all your media in one place. LifesLibary allows you to add books, movies, and TV shows just by taking a picture.
 
