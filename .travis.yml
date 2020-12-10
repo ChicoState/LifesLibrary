@@ -11,4 +11,3 @@ before_script:
 script:
   - npm install --save-dev expo-cli
   - yarn install
-  - npm ci
