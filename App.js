@@ -8,15 +8,13 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Scanner from './components/scanner';
 import Map from './components/map';
 import UL from './components/db';
-
-
-
+import AddBook from './components/addbook';
 
 const MainNavigator = createMaterialTopTabNavigator();
 
 const MainContainer = () => (
   <MainNavigator.Navigator style={styles.navbar} initialRouteName="Library" tabBarPosition='bottom' tabBarOptions={{indicatorStyle: styles.indicator, style: styles.navbar, activeTintColor: 'white', showIcon: true, showLabel: false,}}>
-    
+
     <MainNavigator.Screen name="Map" component={Map} options={{
     tabBarLabel: 'Map',
     tabBarIcon: ({ color }) => (
@@ -27,6 +25,12 @@ const MainContainer = () => (
     tabBarLabel: "Library",
     tabBarIcon: ({ color }) => (
     <MaterialCommunityIcons name="book" color={color} size={20} />
+    ),
+    }}/>
+    <MainNavigator.Screen name="Add Book" component={Scanner} options={{
+    tabBarLabel: 'Home',
+    tabBarIcon: ({ color }) => (
+    <MaterialCommunityIcons name="Home" color={color} size={20} />
     ),
     }}/>
     <MainNavigator.Screen name="Scanner" component={Scanner} options={{
