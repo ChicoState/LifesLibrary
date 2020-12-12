@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, View, Text, StyleSheet, Modal, ActivityIndicator } from 'react-native';
+import { Button, View, Text, StyleSheet, Modal, ActivityIndicator, Animated, AsyncStorage  } from 'react-native';
+import { Slider } from 'react-native-elements';
 import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import AsyncStorage from '@react-native-community/async-storage';
 
 export default class ScannerScreen extends React.Component{
 
@@ -120,10 +120,9 @@ export default class ScannerScreen extends React.Component{
     <View style = {styles.container}>
       <Modal visible={this.state.show} handleClose={this.hideModal}>
         <View style = {styles.container}>
-          <Text>Scanned: {this.state.book.isbn}</Text>
-          <Text>Author: {this.state.book.author}</Text>
-          <Text>Title: {this.state.book.title}</Text>
-          <Text>Description: {this.state.book.description}</Text>
+        <Text style={styles.itemTitle}>{this.state.book.title + "\n"}</Text>
+        <Text style={styles.itemAuthor}>{this.state.book.author + "\n"}</Text>
+        <Text style={styles.itemText}>{"\t" + this.state.book.description + "\n\n" + "ISBN: " + this.state.book.isbn}</Text>
           <View style={{flexDirection: "row"}}>
             <Button title="Close" onPress={() => {this.hideModal();}}/>
             <Button title="Add To Library" onPress={() => {this.addtolibrary()}}/>
@@ -164,4 +163,31 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+  itemText: {
+      textAlign: "left"
+  },
+  itemTitle: {
+      fontSize: 20,
+      fontWeight: "bold",
+      textAlign: "center"
+  },
+  itemAuthor: {
+      fontSize: 15,
+      fontWeight: "bold",
+      textAlign: "center"
+    },
+    appButtonContainer: {
+    elevation: 8,
+    backgroundColor: "#009688",
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 12
+  },
+  appButtonText: {
+    fontSize: 18,
+    color: "#fff",
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase"
+  }
 });

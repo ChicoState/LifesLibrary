@@ -1,6 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, Dimensions, Button, TouchableOpacity, Modal, Image, ImageBackground, SafeAreaView, TextInput } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import { StyleSheet, Text, View, FlatList, Dimensions, Button, TouchableOpacity, Modal, Image, ImageBackground, SafeAreaView, TextInput, Search, AsyncStorage } from 'react-native';
 
 
 const numColumns = 3;
