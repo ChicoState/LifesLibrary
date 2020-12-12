@@ -15,3 +15,10 @@ A simple app to organize all your media in one place. LifesLibary allows you to 
 3. Start your android emulator
 4. $expo start
 5. Once it builds press 'a' to push the app to your android device
+
+## Alternate Install (No Emulator Required)
+1. Fork Repo into desired location
+2. $yarn install
+3. $expo start
+4. Download expo app on your phone
+5. Type URL provided by command line into your phones default browser
