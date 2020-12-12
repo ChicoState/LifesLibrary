@@ -5,7 +5,8 @@
     "ios": "react-native run-ios",
     "web": "expo start --web",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "lint": "./node_modules/.bin/eslint components/*.js App.js"
   },
   "jest": {
     "preset": "react-native",
@@ -25,6 +26,9 @@
     "@react-navigation/material-top-tabs": "^5.3.7",
     "@react-navigation/native": "^5.7.5",
     "@react-navigation/stack": "^5.9.2",
+    "eslint": "^7.15.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-react": "^7.21.5",
     "expo": "~39.0.2",
     "expo-barcode-scanner": "~9.0.0",
     "expo-camera": "~9.0.0",
