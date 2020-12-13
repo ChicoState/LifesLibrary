@@ -30,7 +30,6 @@ export default class ScannerScreen extends React.Component {
       hasCameraPermission: null, // if app has permissions to access camera
       isScanned: false, // scanned
       show: false,
-      bookInfo: 'title',
     };
   }
   /**
