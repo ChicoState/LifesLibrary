@@ -113,7 +113,6 @@ export default class Lib extends React.Component {
 
   save = async () => {
     // eslint-disable-next-line no-invalid-this
-    console.log(this.state.library);
     try {
       // eslint-disable-next-line no-invalid-this
       await AsyncStorage.setItem('library', JSON.stringify(this.state.library));
