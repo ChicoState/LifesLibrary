@@ -3,6 +3,7 @@ import {Button, View, Text, StyleSheet, Modal, ActivityIndicator, AsyncStorage}
   from 'react-native';
 import * as Permissions from 'expo-permissions';
 import {BarCodeScanner} from 'expo-barcode-scanner';
+
 const fetch = require("node-fetch");
 /**
 * Exports class
