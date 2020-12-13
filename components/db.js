@@ -24,7 +24,7 @@ export default class Lib extends React.Component {
   */
   constructor(props) {
     super(props);
-    this.state = {library: [], modalVisible: false, searching: false, search: [],
+    this.state= {library: [], modalVisible: false, searching: false, search: [],
       book: {
         isbn: 'isbn',
         author: 'author',
