@@ -25,6 +25,7 @@ module.exports = {
     'react',
     'eslint-plugin-jsdoc',
   ],
+  'ignorePatterns': ['./node_modules', './ios', '.expo/', 'android/'],
   'rules': {
     'max-len': ['error', 80, 2, {
       'ignoreUrls': true,
