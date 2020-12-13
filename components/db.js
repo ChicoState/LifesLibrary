@@ -49,7 +49,6 @@ export default class Lib extends React.Component {
   inspectBook(book) {
     this.setState({book: book});
     this.setState({modalVisible: true});
-    console.log(book);
   }
 
   /**
@@ -62,7 +61,6 @@ export default class Lib extends React.Component {
     const results = [];
     if (input) {
       this.setState({searching: true});
-      console.log(library);
       library.forEach((book) => {
         if (book.title.match(regex)) {
           results.push(book);
