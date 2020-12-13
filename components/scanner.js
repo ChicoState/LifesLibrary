@@ -54,8 +54,8 @@ export default class ScannerScreen extends React.Component {
   * @param {string} isbn The isbn from the scanner for the book just scanned
   * @param {function} callback the function to be called after data is found
   */
-  getBook(isbn) {
-    fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${encodeURIComponent(isbn)}`)
+  async getBook(isbn) {
+    await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${encodeURIComponent(isbn)}`)
         .then((response) => response.json())
         .then((responseJson) => {
           this.setState({book: {

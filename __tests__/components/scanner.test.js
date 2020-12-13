@@ -60,6 +60,18 @@ test('Get book basic', async () => {
   expect(scanner.state.book.title).toBe('Turtles All the Way Down');
 });
 
+test('Get book bad barcode', async () => {
+  const scanner = renderer.create(<Scanner />).getInstance();
+  await scanner.getBook('97807');
+  expect(scanner.state.book.title).toBe('title');
+});
+
+test('Get book characters', async () => {
+  const scanner = renderer.create(<Scanner />).getInstance();
+  await scanner.getBook('a;sdfhasdkjadvasdase a');
+  expect(scanner.state.book.title).toBe('title');
+});
+
 test('Load library', async () => {
   const scanner = renderer.create(<Scanner />).getInstance();
   await scanner.load();
