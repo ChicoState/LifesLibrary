@@ -8,7 +8,7 @@ import {MaterialCommunityIcons} from '@expo/vector-icons';
 // Pages
 import Scanner from './components/scanner';
 import Map from './components/map';
-import UL from './components/db';
+import Library from './components/library';
 
 const MainNavigator = createMaterialTopTabNavigator();
 
@@ -26,7 +26,7 @@ const MainContainer = () => (
         <MaterialCommunityIcons name="map" color={color} size={20} />
       ),
     }}/>
-    <MainNavigator.Screen name="Library" component={UL} options={{
+    <MainNavigator.Screen name="Library" component={Library} options={{
       tabBarLabel: 'Library',
       // eslint-disable-next-line react/display-name, react/prop-types
       tabBarIcon: ({color}) => (
