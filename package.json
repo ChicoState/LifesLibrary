@@ -6,7 +6,7 @@
     "web": "expo start --web",
     "start": "react-native start",
     "test": "jest",
-    "lint": "./node_modules/.bin/eslint components/*.js App.js"
+    "lint": "./node_modules/.bin/eslint **/*.js"
   },
   "jest": {
     "preset": "react-native",
