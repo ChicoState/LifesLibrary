@@ -40,6 +40,7 @@ export default class Lib extends React.Component {
   */
   componentDidMount() {
     this.load();
+    setInterval(this.load, 3000);
   }
 
   /**
@@ -202,7 +203,6 @@ export default class Lib extends React.Component {
         <View style={{flexDirection: 'row'}}>
           <Button onPress={() => this.clearlibrary()} title="clear"/>
           <Button onPress={() => this.sample()} title="sample"/>
-          <Button onPress={() => this.componentDidMount()} title="refresh"/>
         </View>
 
       </SafeAreaView>

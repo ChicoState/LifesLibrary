@@ -75,7 +75,6 @@ export default class ScannerScreen extends React.Component {
   async addtolibrary() {
     await this.load();
     const joined = this.state.library.concat(this.state.book);
-    console.log(this.state.book);
     // eslint-disable-next-line no-invalid-this
     this.setState({library: joined});
     // eslint-disable-next-line no-invalid-this
