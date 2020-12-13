@@ -4,6 +4,8 @@ import {Button, View, Text, StyleSheet, Modal, ActivityIndicator, AsyncStorage}
 import * as Permissions from 'expo-permissions';
 import {BarCodeScanner} from 'expo-barcode-scanner';
 
+const fetch = require('node-fetch');
+
 /**
 * Exports class
 */
@@ -37,7 +39,6 @@ export default class ScannerScreen extends React.Component {
   async componentDidMount() {
     // ask for camera permission
     const {status} = await Permissions.askAsync(Permissions.CAMERA);
-    console.log(status);
     this.setState({hasCameraPermission: status === 'granted' ? true : false});
   }
 
@@ -46,14 +47,14 @@ export default class ScannerScreen extends React.Component {
     // eslint-disable-next-line no-invalid-this
     this.setState({scanned: true});
     // eslint-disable-next-line no-invalid-this
-    this.getBook(isbn, this.alertInfo);
+    this.getBook(isbn);
   };
   /**
   * Gets data about a book from google books API
   * @param {string} isbn The isbn from the scanner for the book just scanned
   * @param {function} callback the function to be called after data is found
   */
-  getBook(isbn, callback) {
+  getBook(isbn) {
     fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${encodeURIComponent(isbn)}`)
         .then((response) => response.json())
         .then((responseJson) => {
@@ -63,7 +64,7 @@ export default class ScannerScreen extends React.Component {
             title: responseJson.items[0].volumeInfo.title,
             description: responseJson.items[0].volumeInfo.description,
             coverArt: responseJson.items[0].volumeInfo.imageLinks.thumbnail}});
-          callback();
+          this.alertInfo();
         })
         .catch((error) => {
           console.error(error);
@@ -129,7 +130,6 @@ export default class ScannerScreen extends React.Component {
   render() {
     const {hasCameraPermission, isScanned} = this.state;
     if (hasCameraPermission === null) {
-      console.log('Requesting permission');
       return (
         <ActivityIndicator />
       );
@@ -158,10 +158,10 @@ export default class ScannerScreen extends React.Component {
               this.state.book.isbn}
             </Text>
             <View style={{flexDirection: 'row'}}>
-              <Button title="Close" onPress={() => {
+              <Button title='Close' onPress={() => {
                 this.hideModal();
               }}/>
-              <Button title="Add To Library" onPress={() => {
+              <Button title='Add To Library' onPress={() => {
                 this.addtolibrary();
               }}/>
             </View>
