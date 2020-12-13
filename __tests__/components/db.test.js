@@ -5,7 +5,7 @@ import Enzyme, { shallow, render, mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import Adapter from 'enzyme-adapter-react-16';
 
-it('render component Library', () => {
+it('render component scanner', () => {
     const TextInputComponent = renderer.create(<Library />).toJSON();
     expect(TextInputComponent).toMatchSnapshot();
 });
