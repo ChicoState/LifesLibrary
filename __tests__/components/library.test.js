@@ -3,6 +3,7 @@ import renderer from 'react-test-renderer';
 import Library from '../../components/library.js';
 
 it('render component scanner', () => {
+  jest.useFakeTimers();
   const TextInputComponent = renderer.create(<Library />).toJSON();
   expect(TextInputComponent).toMatchSnapshot();
 });
